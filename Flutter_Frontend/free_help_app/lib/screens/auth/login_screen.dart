@@ -1,6 +1,5 @@
   import 'package:flutter/material.dart';
   import 'package:firebase_auth/firebase_auth.dart';
-  import '../home/home_screen.dart';
   import 'signup_screen.dart';
 
   class LoginScreen extends StatefulWidget {
@@ -22,18 +21,7 @@
         password: passwordController.text.trim(),
       );
 
-      final user = credential.user;
-      // final token = await user!.getIdToken(true);
-
-      // 🔥 SHOW TOKEN ON SCREEN
-      final token = await user?.getIdToken(true);
-      print('TOKEN: $token');
       
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
-        (_) => false,
-      );
     } catch (e) {
       ScaffoldMessenger.of(
         context,

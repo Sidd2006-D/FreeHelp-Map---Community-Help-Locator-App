@@ -42,7 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("FreeHelp")),
       body: Center(
-        child: ElevatedButton(onPressed: logout, child: const Text("Logout")),
+        child:ElevatedButton(
+  onPressed: () async {
+    await FirebaseAuth.instance.signOut();
+  },
+  child: const Text("Logout"),
+)
       ),
     );
   }
