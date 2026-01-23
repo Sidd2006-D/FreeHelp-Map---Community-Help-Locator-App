@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "387188131613",
+    "project_id": "freehelp-app",
+    "storage_bucket": "freehelp-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387188131613:android:08581c633c1e5c506603f4",
+        "android_client_info": {
+          "package_name": "com.example.freehelp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387188131613-np89r5u1qpkl8s7ag1pbdnef9toe2o5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTzEfE15mSOCmyV-dFamnfmo7oOuG9Qfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387188131613-np89r5u1qpkl8s7ag1pbdnef9toe2o5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
