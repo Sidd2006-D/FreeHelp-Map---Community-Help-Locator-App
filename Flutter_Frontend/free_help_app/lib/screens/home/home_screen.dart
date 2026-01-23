@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../auth/login_screen.dart';
+import '../../services/api_service.dart';
+import '../../models/user_model.dart';
+
+
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,61 +12,54 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<AppUser> userFuture;
+
   @override
   void initState() {
     super.initState();
-    printFirebaseToken(); // 👈 runs once when screen opens
-  }
-
-  Future<void> printFirebaseToken() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      print("❌ No user logged in");
-      return;
-    }
-
-    final token = await user.getIdToken(true);
-
-    print("🔥 FIREBASE ID TOKEN ↓↓↓");
-    print(token);
-  }
-
-  Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-      (_) => false,
-    );
+    userFuture = ApiService.fetchCurrentUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("FreeHelp")),
-      body: Center(
-        child:ElevatedButton(
-  onPressed: () async {
-    await FirebaseAuth.instance.signOut();
-  },
-  child: const Text("Logout"),
-)
+      body: FutureBuilder<AppUser>(
+        future: userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+
+          final user = snapshot.data!;
+
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Welcome ${user.email}",
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 8),
+                Text("Trust score: ${user.trustScore}"),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                  },
+                  child: const Text("Logout"),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
-}
-
-
-Future<void> fetchUserFromBackend() async {
-  final user = FirebaseAuth.instance.currentUser;
-
-  if (user == null) {
-    print("User not logged in");
-    return;
-  }
-
-  final token = await user.getIdToken(true);
-  print("🔥 Firebase ID Token:");
-  print(token);
 }

@@ -16,17 +16,19 @@
     setState(() => loading = true);
 
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
 
       
     } catch (e) {
+        if (mounted) {
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("ERROR: $e")));
-    }
+    }}
 
     setState(() => loading = false);
   }

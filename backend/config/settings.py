@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-$s!-sc4vg0-n8dj%bbxo2r$spd4j+hc0198k9ajowrtl_)(2--
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1']
+# py manage.py runserver 0.0.0.0:8000
+
 AUTH_USER_MODEL = 'accounts.User'
 
 FIREBASE_SERVICE_ACCOUNT = BASE_DIR / 'firebase_key.json'
