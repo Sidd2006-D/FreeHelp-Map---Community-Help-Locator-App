@@ -426,3 +426,143 @@ With API infrastructure finalized, the project is now ready for:
 💬 Comments & ratings
 
 🔔 Notifications
+# -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### 🟢 Phase 8: Help / Post Creation System (With Images & Scheduling)
+## ✅ 1️⃣ Post Creation Feature (Backend + Flutter)
+
+Implemented a complete Help / Food / Event post creation flow with secure authentication and backend integration.
+
+# 🎯 Features
+
+Authenticated users can create posts
+
+Supports multiple post types (food, help, event)
+
+Location-aware post design
+
+Radius-based visibility
+
+## ✅ 2️⃣ Optional Image Upload (Max 3 Images)
+
+Post creation now supports optional image uploads.
+
+# 🧱 Backend Design
+
+Separate PostImage model linked to Post
+
+Images stored using Django ImageField
+
+Maximum of 3 images enforced at API level
+
+# 📱 Flutter Integration
+
+Image selection via gallery
+
+Preview images before upload
+
+Multipart upload with Firebase authentication
+
+## ✅ 3️⃣ Scheduled Posts Logic (is_active + event_time)
+
+Implemented conditional scheduling logic for posts.
+
+# 🧠 Business Rule
+
+If is_active = true → post is live immediately
+
+If is_active = false → event_time is required
+
+#📱 Flutter Enforcement
+
+Toggle switch for active/scheduled post
+
+Date & time picker shown only when scheduled
+
+Frontend validation prevents invalid submissions
+
+# 📡 API Payload
+
+is_active always sent
+
+event_time sent only for scheduled posts
+
+ISO-8601 datetime format used for backend compatibility
+
+## ✅ 4️⃣ Centralized API Handling (Flutter)
+
+Post creation API integrated into the existing centralized ApiService.
+```
+📁 File
+
+lib/services/api_service.dart
+```
+🧩 Responsibilities
+
+Firebase token retrieval
+
+Multipart form submission
+
+Image handling
+
+Scheduling field mapping
+
+## ✅ 5️⃣ Add Post Screen (Flutter UI)
+
+A dedicated screen for creating posts was implemented.
+```
+📁 File
+
+lib/screens/post/add_post_screen.dart
+```
+# 🧱 UI Components
+
+Post type selector
+
+Title & description inputs
+
+Image picker with preview
+
+Active/scheduled toggle
+
+Event time picker (conditional)
+
+Submit with loading state
+
+## ✅ 6️⃣ Home Screen Integration
+
+Post creation screen linked to Home screen.
+
+🧩 Navigation
+
+Floating Action Button (FAB) on HomeScreen
+
+Navigates to AddPostScreen
+
+Returns to Home after successful post creation
+
+## ✅ 7️⃣ Validation & Stability Improvements
+
+Additional safeguards added for production readiness.
+
+# 🔒 Improvements
+
+Frontend validation for scheduled posts
+
+Controller disposal to prevent memory leaks
+
+Disabled submit button during API calls
+
+Error feedback via SnackBar
+
+# 🚀 Current System Capabilities
+
+🔐 Secure authenticated post creation
+
+🖼️ Image-rich posts (up to 3 images)
+
+⏰ Scheduled & live posts supported
+
+🧠 Clean backend & frontend separation
+
+🏗️ Scalable architecture for feeds & maps
