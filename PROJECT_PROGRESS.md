@@ -302,3 +302,127 @@ Notifications
 
 Authentication foundation is complete, stable, and production-ready.
 All future features will build on top of this.
+
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------
+### 🟢 Phase 7: Flutter API Infrastructure & Backend Integration
+## ✅ 1️⃣ Centralized API Configuration (Global Base URL)
+
+To avoid hardcoding backend URLs across the app, a global configuration file was introduced.
+```
+📁 File: lib/config/app_config.dart
+
+class AppConfig {
+  static const String apiBaseUrl = "http://10.0.2.2:8000/api";
+}
+```
+
+🎯 Purpose
+
+Single source of truth for backend base URL
+
+Switch between emulator, physical device, and production by changing one value
+
+Prevents scattered hardcoded URLs
+
+## ✅ 2️⃣ Centralized API Service Layer
+
+All backend API calls are routed through a single service class.
+```
+📁 File: lib/services/api_service.dart
+
+import '../config/app_config.dart';
+
+class ApiService {
+  static const String baseUrl = AppConfig.apiBaseUrl;
+}
+```
+
+🎯 Purpose
+
+Centralized Firebase token handling
+
+Consistent API request pattern
+
+Easier debugging and maintenance
+
+Scalable for future APIs (posts, comments, ratings)
+
+## ✅ 3️⃣ Backend /users/me/ API Integration (Flutter)
+
+The first authenticated backend API call fetches the current user profile.
+```
+📁 File: lib/services/api_service.dart
+
+static Future<AppUser> fetchCurrentUser() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    throw Exception("User not authenticated");
+  }
+
+  final token = await user.getIdToken(true);
+
+  final response = await http.get(
+    Uri.parse("$baseUrl/users/me/"),
+    headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json",
+    },
+  );
+
+  if (response.statusCode == 200) {
+    return AppUser.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception("Failed to load user profile");
+  }
+}
+```
+
+🎯 Purpose
+
+Verifies Firebase token usage in Flutter
+
+Confirms Django authentication pipeline
+
+Retrieves user profile data (email, trust score, etc.)
+
+## ✅ 4️⃣ Home Screen Backend Data Consumption
+
+The Home screen now consumes authenticated backend data.
+```
+📁 File: lib/home/home_screen.dart
+```
+🧩 Logic
+
+Calls ApiService.fetchCurrentUser() in initState
+
+Displays backend-provided user data
+
+Confirms Flutter ↔ Django integration
+
+🎯 Purpose
+
+Ensures user data comes from backend, not just Firebase
+
+Establishes reusable API consumption pattern
+
+✅ 5️⃣ Architecture Status After Integration
+
+🔒 Firebase authentication fully integrated
+
+🔗 Flutter securely communicates with Django
+
+🧠 User data synced and reusable across app
+
+🏗️ API infrastructure ready for scaling
+
+🚀 Ready for Next Features
+
+With API infrastructure finalized, the project is now ready for:
+
+📝 Help / Post creation system
+
+📍 Location-based filtering
+
+💬 Comments & ratings
+
+🔔 Notifications
