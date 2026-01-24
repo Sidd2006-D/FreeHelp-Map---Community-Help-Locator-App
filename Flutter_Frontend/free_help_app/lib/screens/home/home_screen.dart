@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/api_service.dart';
 import '../../models/user_model.dart';
+import '../posts/add_post_screen.dart';
+
 
 
 
@@ -24,6 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("FreeHelp")),
+
+      // 🔹 ADD POST BUTTON
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddPostScreen()),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+
       body: FutureBuilder<AppUser>(
         future: userFuture,
         builder: (context, snapshot) {

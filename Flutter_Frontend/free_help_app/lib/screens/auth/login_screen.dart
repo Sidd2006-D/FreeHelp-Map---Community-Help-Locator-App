@@ -1,6 +1,7 @@
   import 'package:flutter/material.dart';
   import 'package:firebase_auth/firebase_auth.dart';
   import 'signup_screen.dart';
+  import 'dart:developer' as developer;
 
   class LoginScreen extends StatefulWidget {
     @override
@@ -16,11 +17,13 @@
     setState(() => loading = true);
 
     try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+        var creditials = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
+      
+      var token = await creditials.user?.getIdToken(true);
+      developer.log("User logged in with token: $token");
       
     } catch (e) {
         if (mounted) {
@@ -30,7 +33,7 @@
       ).showSnackBar(SnackBar(content: Text("ERROR: $e")));
     }}
 
-    setState(() => loading = false);
+    // setState(() => loading = false);
   }
 
 
@@ -72,3 +75,5 @@
       );
     }
   }
+
+
